@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import { loginUser } from "../../redux/features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+const apiURL = process.env.REACT_APP_API_URL;
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = "http://localhost:8080/api/auth";
+      //const url = "http://localhost:8080/api/auth";
+      console.log("apiURL: ", apiURL);
+      //const url = "https://homewise-backend.azurewebsites.net/api/auth";
+      const url = apiURL + "api/auth";
+
       const { data: res } = await axios.post(url, data);
       //localStorage.setItem("token", res.data);
       dispatch(loginUser({ token: res.data }));

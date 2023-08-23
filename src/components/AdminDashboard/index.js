@@ -5,6 +5,7 @@ import axios from "axios";
 import Navbar from "../Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { searchProperties } from "../../redux/features/properties/propertiesSlice";
+const apiURL = process.env.REACT_APP_API_URL;
 
 function AdminDashboard() {
   const dispatch = useDispatch();
@@ -37,10 +38,12 @@ function AdminDashboard() {
   const fetchData = async (e) => {
     try {
       console.log("In Admin dash!");
-      const url = "http://localhost:8080/api/properties/getAllProperty";
+      //const url = "http://localhost:8080/api/properties/getAllProperty";
+      const url = apiURL + "api/properties/getAllProperty";
+
       const response = await axios.get(url);
       const resdata = response.data;
-      console.log("Data from Node+= ", resdata);
+      console.log("Properties from API += ", resdata);
       setData(resdata);
       //window.location = "/";
     } catch (error) {
@@ -54,32 +57,34 @@ function AdminDashboard() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
-    try {
-      console.log("In Search properties!");
-      console.log("searchfields:", searchfields);
-      const url = "http://localhost:8080/api/properties/getProperties";
-      const response = await axios.post(url, searchfields);
-      const resdata = response.data;
-      console.log("Data from Node+= ", resdata);
-      setData(resdata);
-      //window.location = "/";
-    } catch (error) {
-      if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status <= 500
-      ) {
-        setError(error.response.data.message);
-      }
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault(); // Prevent default form submission
+  //   try {
+  //     console.log("In Search properties!");
+  //     console.log("searchfields:", searchfields);
+  //     const url = "http://localhost:8080/api/properties/getProperties";
+  //     // const url =
+  //     // "https://homewise-backend.azurewebsites.net/api/properties/getProperties";
+  //     const response = await axios.post(url, searchfields);
+  //     const resdata = response.data;
+  //     console.log("Data from Node+= ", resdata);
+  //     setData(resdata);
+  //     //window.location = "/";
+  //   } catch (error) {
+  //     if (
+  //       error.response &&
+  //       error.response.status >= 400 &&
+  //       error.response.status <= 500
+  //     ) {
+  //       setError(error.response.data.message);
+  //     }
+  //   }
+  // };
 
   return (
     <div>
       <Navbar />
-      <section className={styles.searchFields}>
+      {/* <section className={styles.searchFields}>
         <form className={styles.form_container} onSubmit={handleSubmit}>
           <h1>Search Properties</h1>
           <div className={styles.filterFieldsContainer}>
@@ -133,7 +138,7 @@ function AdminDashboard() {
             Search
           </button>
         </form>
-      </section>
+      </section> */}
       <div className={styles.cardsContainer}>
         {data.map((item) => (
           <PropertyCard key={item.id} data={item} />
